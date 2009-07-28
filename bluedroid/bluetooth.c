@@ -70,6 +70,7 @@ static int init_rfkill() {
 }
 
 static int check_bluetooth_power() {
+    /*
     int sz;
     int fd = -1;
     int ret = -1;
@@ -104,9 +105,12 @@ static int check_bluetooth_power() {
 out:
     if (fd >= 0) close(fd);
     return ret;
+    */
+    return 1;
 }
 
 static int set_bluetooth_power(int on) {
+    /*
     int sz;
     int fd = -1;
     int ret = -1;
@@ -133,6 +137,8 @@ static int set_bluetooth_power(int on) {
 out:
     if (fd >= 0) close(fd);
     return ret;
+    */
+    return 0;
 }
 
 static inline int create_hci_sock() {
@@ -153,11 +159,13 @@ int bt_enable() {
 
     if (set_bluetooth_power(1) < 0) goto out;
 
+    /*
     LOGI("Starting hciattach daemon");
     if (property_set("ctl.start", "hciattach") < 0) {
         LOGE("Failed to start hciattach");
         goto out;
     }
+    */
 
     // Try for 10 seconds, this can only succeed once hciattach has sent the
     // firmware and then turned on hci device via HCIUARTSETPROTO ioctl
@@ -207,11 +215,13 @@ int bt_disable() {
     if (hci_sock < 0) goto out;
     ioctl(hci_sock, HCIDEVDOWN, HCI_DEV_ID);
 
+    /*
     LOGI("Stopping hciattach deamon");
     if (property_set("ctl.stop", "hciattach") < 0) {
         LOGE("Error stopping hciattach");
         goto out;
     }
+    */
 
     if (set_bluetooth_power(0) < 0) {
         goto out;
